@@ -17,27 +17,27 @@ jobs:
 # test and build
   test-and-build:
     runs-on: ubuntu-latest
-  defaults:
-    run:
-      working-directory: cicd-section/api
-  steps:
-    # checkout code
-    - name: checkout
-      uses: actions/checkout@v4
-    - name: run tests and build an image
-      run: docker build -t temp_api_image:latest .
-    #
-    - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-region: ${{ env.AWS_REGION }}
-        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-    - name: login to aws ecr
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-    - name: push the image to aws ecr
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
-        docker image tag temp_api_image:latest $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
-        docker image push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
+    defaults:
+      run:
+        working-directory: cicd-section/api
+    steps:
+      # checkout code
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: run tests and build an image
+        run: docker build -t temp_api_image:latest .
+      #
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      - name: login to aws ecr
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: push the image to aws ecr
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker image tag temp_api_image:latest $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
+          docker image push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
