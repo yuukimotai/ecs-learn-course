@@ -43,7 +43,7 @@ jobs:
           docker image push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
           echo $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }} > api-image-uri.txt
       - name: upload the image uri file as an artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: api-image-uri
           path: cicd-section/api/api-image-uri.txt
@@ -63,7 +63,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
       - name: download the artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: api-image-uri
           path: artifacts
