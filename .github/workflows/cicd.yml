@@ -23,9 +23,9 @@ jobs:
   steps:
     # checkout code
     - uses: actions/checkout@v4
-    #
     - name: run tests and build an image
-      run: docker build -t temp_api_image
+      run: docker build -t temp_api_image:latest .
+    #
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
